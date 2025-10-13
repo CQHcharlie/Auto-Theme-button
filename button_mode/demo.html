@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>主题切换按钮 - 演示页面</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 1.2rem;
+      margin-bottom: 3rem;
+      opacity: 0.7;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .feature-card {
+      padding: 2rem;
+      border-radius: 12px;
+      background: rgba(128, 128, 128, 0.1);
+      backdrop-filter: blur(10px);
+      transition: transform 0.3s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .feature-card h3 {
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+    }
+
+    .feature-card p {
+      line-height: 1.6;
+      opacity: 0.8;
+    }
+
+    .controls {
+      background: rgba(128, 128, 128, 0.1);
+      padding: 2rem;
+      border-radius: 12px;
+      margin-bottom: 3rem;
+    }
+
+    .controls h2 {
+      margin-bottom: 1.5rem;
+    }
+
+    .control-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .control-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    .control-group select,
+    .control-group input {
+      width: 100%;
+      padding: 0.75rem;
+      border-radius: 8px;
+      border: 2px solid rgba(128, 128, 128, 0.3);
+      background: rgba(255, 255, 255, 0.1);
+      color: inherit;
+      font-size: 1rem;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      border: none;
+      background: #007bff;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+      background: #0056b3;
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: #6c757d;
+    }
+
+    .btn-secondary:hover {
+      background: #545b62;
+    }
+
+    .code-section {
+      margin-top: 3rem;
+    }
+
+    .code-block {
+      background: rgba(0, 0, 0, 0.05);
+      padding: 1.5rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin-top: 1rem;
+    }
+
+    .code-block pre {
+      margin: 0;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    .theme-status {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      padding: 1rem 1.5rem;
+      background: rgba(128, 128, 128, 0.2);
+      backdrop-filter: blur(10px);
+      border-radius: 8px;
+      font-weight: 600;
+      z-index: 1000;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2rem;
+      }
+
+      .features {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="theme-status" id="themeStatus">
+    当前主题: <span id="currentTheme">light</span>
+  </div>
+
+  <div class="container">
+    <h1>🌓 主题切换按钮</h1>
+    <p class="subtitle">一个可嵌入任何网站的深色/浅色模式切换按钮</p>
+
+    <div class="features">
+      <div class="feature-card">
+        <h3>🎨 完全可定制</h3>
+        <p>自定义位置、大小、颜色和动画效果，完美融入你的网站设计。</p>
+      </div>
+
+      <div class="feature-card">
+        <h3>📱 响应式设计</h3>
+        <p>在所有设备上都能完美显示，支持触摸操作和键盘导航。</p>
+      </div>
+
+      <div class="feature-card">
+        <h3>💾 记忆功能</h3>
+        <p>自动保存用户的主题偏好，下次访问时自动应用。</p>
+      </div>
+
+      <div class="feature-card">
+        <h3>🚀 轻量级</h3>
+        <p>零依赖，纯原生JavaScript，文件大小不到5KB。</p>
+      </div>
+
+      <div class="feature-card">
+        <h3>⚡ 即插即用</h3>
+        <p>只需一行代码即可集成，无需复杂配置。</p>
+      </div>
+
+      <div class="feature-card">
+        <h3>🔧 灵活控制</h3>
+        <p>支持悬浮、固定多种定位方式，满足各种使用场景。</p>
+      </div>
+
+      <div class="feature-card">
+        <h3>🎯 选择性排除</h3>
+        <p>可以指定某些元素不受深色模式影响，保持原有样式。</p>
+      </div>
+    </div>
+
+    <div class="controls">
+      <h2>实时调整按钮配置</h2>
+      
+      <div class="control-group">
+        <label for="positionSelect">按钮位置：</label>
+        <select id="positionSelect">
+          <option value="top-left">左上角</option>
+          <option value="top-right" selected>右上角</option>
+          <option value="bottom-left">左下角</option>
+          <option value="bottom-right">右下角</option>
+          <option value="fixed">页面中央（固定）</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <label for="sizeInput">按钮大小：<span id="sizeValue">50</span>px</label>
+        <input type="range" id="sizeInput" min="30" max="100" value="50">
+      </div>
+
+      <div class="control-group">
+        <label for="offsetXInput">水平偏移：<span id="offsetXValue">20</span>px</label>
+        <input type="range" id="offsetXInput" min="0" max="100" value="20">
+      </div>
+
+      <div class="control-group">
+        <label for="offsetYInput">垂直偏移：<span id="offsetYValue">20</span>px</label>
+        <input type="range" id="offsetYInput" min="0" max="100" value="20">
+      </div>
+
+      <div class="button-group">
+        <button class="btn" id="applyBtn">应用配置</button>
+        <button class="btn btn-secondary" id="resetBtn">重置</button>
+        <button class="btn btn-secondary" id="destroyBtn">移除按钮</button>
+        <button class="btn" id="recreateBtn" style="display: none;">重新创建按钮</button>
+      </div>
+    </div>
+
+    <div class="code-section">
+      <h2>如何使用</h2>
+      
+      <h3>方法1：引入JS文件</h3>
+      <div class="code-block">
+        <pre>&lt;script src="theme-toggle.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  new ThemeToggle({
+    position: 'bottom-right',
+    offset: { x: 20, y: 20 },
+    size: 50,
+    darkColor: '#1a1a1a',
+    lightColor: '#ffffff'
+  });
+&lt;/script&gt;</pre>
+      </div>
+
+      <h3 style="margin-top: 2rem;">方法2：CDN（即将推出）</h3>
+      <div class="code-block">
+        <pre>&lt;script src="https://cdn.example.com/theme-toggle.min.js"&gt;&lt;/script&gt;
+&lt;script&gt;new ThemeToggle();&lt;/script&gt;</pre>
+      </div>
+
+      <h3 style="margin-top: 2rem;">配置选项</h3>
+      <div class="code-block">
+        <pre>{
+  position: 'top-right',      // 位置：'top-left', 'top-right', 'bottom-left', 'bottom-right', 'fixed'
+  offset: { x: 20, y: 20 },  // 偏移量（像素）
+  size: 50,                   // 按钮大小（像素）
+  darkColor: '#1a1a1a',      // 深色模式背景色
+  lightColor: '#ffffff',     // 浅色模式背景色
+  transition: '0.3s ease',   // 过渡动画
+  zIndex: 9999,               // 层级
+  defaultTheme: 'light',      // 默认主题：'light' 或 'dark'
+  excludeSelectors: ['.no-dark', '#keep-light']  // 不深色化的元素选择器
+}</pre>
+      </div>
+
+      <h3 style="margin-top: 2rem;">监听主题变化事件</h3>
+      <div class="code-block">
+        <pre>document.addEventListener('themeChanged', (e) => {
+  console.log('主题已切换为:', e.detail.theme);
+  // 在这里添加你的自定义逻辑
+});</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- 引入主题切换按钮 -->
+  <script src="theme-toggle.js"></script>
+  <script>
+    // 初始化主题切换按钮
+    let themeToggle = new ThemeToggle({
+      position: 'top-right',
+      offset: { x: 20, y: 20 },
+      size: 50,
+      darkColor: '#1a1a1a',
+      lightColor: '#ffffff'
+    });
+
+    // 监听主题变化
+    document.addEventListener('themeChanged', (e) => {
+      document.getElementById('currentTheme').textContent = e.detail.theme;
+    });
+
+    // 控制面板功能
+    const positionSelect = document.getElementById('positionSelect');
+    const sizeInput = document.getElementById('sizeInput');
+    const offsetXInput = document.getElementById('offsetXInput');
+    const offsetYInput = document.getElementById('offsetYInput');
+    const applyBtn = document.getElementById('applyBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const destroyBtn = document.getElementById('destroyBtn');
+    const recreateBtn = document.getElementById('recreateBtn');
+
+    // 更新显示值
+    sizeInput.addEventListener('input', (e) => {
+      document.getElementById('sizeValue').textContent = e.target.value;
+    });
+
+    offsetXInput.addEventListener('input', (e) => {
+      document.getElementById('offsetXValue').textContent = e.target.value;
+    });
+
+    offsetYInput.addEventListener('input', (e) => {
+      document.getElementById('offsetYValue').textContent = e.target.value;
+    });
+
+    // 应用配置
+    applyBtn.addEventListener('click', () => {
+      const position = positionSelect.value;
+      const size = parseInt(sizeInput.value);
+      const offsetX = parseInt(offsetXInput.value);
+      const offsetY = parseInt(offsetYInput.value);
+
+      // 销毁旧按钮
+      themeToggle.destroy();
+
+      // 创建新按钮
+      themeToggle = new ThemeToggle({
+        position: position,
+        offset: { x: offsetX, y: offsetY },
+        size: size,
+        darkColor: '#1a1a1a',
+        lightColor: '#ffffff'
+      });
+    });
+
+    // 重置配置
+    resetBtn.addEventListener('click', () => {
+      positionSelect.value = 'top-right';
+      sizeInput.value = 50;
+      offsetXInput.value = 20;
+      offsetYInput.value = 20;
+      document.getElementById('sizeValue').textContent = '50';
+      document.getElementById('offsetXValue').textContent = '20';
+      document.getElementById('offsetYValue').textContent = '20';
+
+      themeToggle.destroy();
+      themeToggle = new ThemeToggle({
+        position: 'top-right',
+        offset: { x: 20, y: 20 },
+        size: 50,
+        darkColor: '#1a1a1a',
+        lightColor: '#ffffff'
+      });
+    });
+
+    // 移除按钮
+    destroyBtn.addEventListener('click', () => {
+      themeToggle.destroy();
+      destroyBtn.style.display = 'none';
+      recreateBtn.style.display = 'inline-block';
+    });
+
+    // 重新创建按钮
+    recreateBtn.addEventListener('click', () => {
+      themeToggle = new ThemeToggle({
+        position: positionSelect.value,
+        offset: { 
+          x: parseInt(offsetXInput.value), 
+          y: parseInt(offsetYInput.value) 
+        },
+        size: parseInt(sizeInput.value),
+        darkColor: '#1a1a1a',
+        lightColor: '#ffffff'
+      });
+      destroyBtn.style.display = 'inline-block';
+      recreateBtn.style.display = 'none';
+    });
+  </script>
+</body>
+</html>

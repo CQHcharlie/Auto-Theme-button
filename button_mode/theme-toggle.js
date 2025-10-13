@@ -18,23 +18,26 @@
 class ThemeToggle {
   constructor(options = {}) {
     this.options = {
-      position: options.position || 'bottom-right',
+      position: options.position || 'top-right',
       offset: options.offset || { x: 20, y: 20 },
       size: options.size || 50,
       darkColor: options.darkColor || '#1a1a1a',
       lightColor: options.lightColor || '#ffffff',
       transition: options.transition || '0.3s ease',
       zIndex: options.zIndex || 9999,
+      defaultTheme: options.defaultTheme || 'light',
+      excludeSelectors: options.excludeSelectors || [],  // 排除的选择器数组
       ...options
     };
 
-    this.theme = this.getSavedTheme() || 'light';
+    this.theme = this.getSavedTheme() || this.options.defaultTheme;
     this.init();
   }
 
   init() {
+    // 在创建按钮前先应用主题，避免闪烁
+    this.applyTheme(this.theme, true);
     this.createButton();
-    this.applyTheme(this.theme);
     this.attachEventListeners();
   }
 
@@ -59,19 +62,19 @@ class ThemeToggle {
       position: 'fixed',
       width: `${size}px`,
       height: `${size}px`,
-      borderRadius: '50%',
-      border: 'none',
+      borderRadius: '12px',  // 圆角方形
+      border: this.theme === 'dark' ? '2px solid rgba(255, 255, 255, 0.2)' : '2px solid rgba(0, 0, 0, 0.1)',  // 细边框
       cursor: 'pointer',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      fontSize: `${size * 0.5}px`,
+      fontSize: `${size * 0.6}px`,  // 调整字体大小以适配emoji
       boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
       transition: `all ${transition}`,
       zIndex: zIndex,
       outline: 'none',
-      background: this.theme === 'dark' ? '#f0f0f0' : '#2d2d2d',
-      color: this.theme === 'dark' ? '#2d2d2d' : '#f0f0f0'
+      background: this.theme === 'dark' ? '#2d2d2d' : '#f0f0f0',  // 深色时深色背景，浅色时浅色背景
+      color: this.theme === 'dark' ? '#f0f0f0' : '#2d2d2d'
     };
 
     // 根据位置设置偏移
@@ -93,28 +96,12 @@ class ThemeToggle {
   }
 
   getIcon(theme) {
-    if (theme === 'dark') {
-      // 太阳图标 (浅色模式)
-      return `
-        <svg width="60%" height="60%" viewBox="0 0 24 24" fill="currentColor">
-          <circle cx="12" cy="12" r="5"/>
-          <line x1="12" y1="1" x2="12" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          <line x1="12" y1="21" x2="12" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          <line x1="1" y1="12" x2="3" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          <line x1="21" y1="12" x2="23" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-      `;
+    if (theme === 'light') {
+      // 浅色模式显示太阳图标
+      return '🔆';
     } else {
-      // 月亮图标 (深色模式)
-      return `
-        <svg width="60%" height="60%" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-        </svg>
-      `;
+      // 深色模式显示月亮图标
+      return '🌙';
     }
   }
 
@@ -142,8 +129,19 @@ class ThemeToggle {
     this.updateButton();
   }
 
-  applyTheme(theme) {
-    const { darkColor, lightColor } = this.options;
+  applyTheme(theme, immediate = false) {
+    const { darkColor, lightColor, excludeSelectors } = this.options;
+    
+    // 如果是立即应用（初始化时），暂时禁用过渡动画
+    if (immediate) {
+      const style = document.createElement('style');
+      style.id = 'theme-toggle-no-transition';
+      style.textContent = '* { transition: none !important; }';
+      document.head.appendChild(style);
+      
+      // 强制重排
+      document.body.offsetHeight;
+    }
     
     if (theme === 'dark') {
       document.documentElement.style.setProperty('--bg-color', darkColor);
@@ -159,15 +157,59 @@ class ThemeToggle {
       document.body.style.color = darkColor;
     }
 
+    // 为排除的元素添加特殊样式
+    this.applyExcludeStyles(theme);
+
+    // 移除禁用过渡的样式
+    if (immediate) {
+      setTimeout(() => {
+        const noTransStyle = document.getElementById('theme-toggle-no-transition');
+        if (noTransStyle) {
+          noTransStyle.remove();
+        }
+      }, 10);
+    }
+
     // 触发自定义事件
     const event = new CustomEvent('themeChanged', { detail: { theme } });
     document.dispatchEvent(event);
   }
 
+  applyExcludeStyles(theme) {
+    const { excludeSelectors, lightColor, darkColor } = this.options;
+    
+    // 移除旧的排除样式
+    const oldStyle = document.getElementById('theme-toggle-exclude-styles');
+    if (oldStyle) {
+      oldStyle.remove();
+    }
+
+    // 如果没有排除选择器，直接返回
+    if (!excludeSelectors || excludeSelectors.length === 0) {
+      return;
+    }
+
+    // 创建新的排除样式
+    const style = document.createElement('style');
+    style.id = 'theme-toggle-exclude-styles';
+    
+    const cssRules = excludeSelectors.map(selector => {
+      // 为排除的元素保持原始的浅色样式
+      return `${selector} {
+        background-color: ${lightColor} !important;
+        color: ${darkColor} !important;
+      }`;
+    }).join('\n');
+    
+    style.textContent = cssRules;
+    document.head.appendChild(style);
+  }
+
   updateButton() {
     this.button.innerHTML = this.getIcon(this.theme);
-    this.button.style.background = this.theme === 'dark' ? '#f0f0f0' : '#2d2d2d';
-    this.button.style.color = this.theme === 'dark' ? '#2d2d2d' : '#f0f0f0';
+    this.button.style.background = this.theme === 'dark' ? '#2d2d2d' : '#f0f0f0';
+    this.button.style.color = this.theme === 'dark' ? '#f0f0f0' : '#2d2d2d';
+    this.button.style.border = this.theme === 'dark' ? '2px solid rgba(255, 255, 255, 0.2)' : '2px solid rgba(0, 0, 0, 0.1)';
   }
 
   saveTheme(theme) {
