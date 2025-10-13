@@ -1,0 +1,38 @@
+{
+  "name": "auto-theme-button",
+  "version": "1.0.0",
+  "description": "一个轻量级、可定制的主题切换按钮，支持深色/浅色模式一键切换",
+  "main": "button_mode/theme-toggle.js",
+  "scripts": {
+    "demo": "python -m http.server 8080",
+    "start": "python -m http.server 8080"
+  },
+  "keywords": [
+    "theme",
+    "dark-mode",
+    "light-mode",
+    "theme-toggle",
+    "dark-theme",
+    "light-theme",
+    "主题切换",
+    "深色模式",
+    "浅色模式"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CQHcharlie/Auto-Theme-button.git"
+  },
+  "bugs": {
+    "url": "https://github.com/CQHcharlie/Auto-Theme-button/issues"
+  },
+  "homepage": "https://github.com/CQHcharlie/Auto-Theme-button#readme",
+  "files": [
+    "button_mode/theme-toggle.js",
+    "button_mode/theme-toggle.min.js",
+    "button_mode/embed_code.html",
+    "README.md",
+    "LICENSE"
+  ]
+}
