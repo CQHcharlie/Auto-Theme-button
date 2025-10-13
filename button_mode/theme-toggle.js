@@ -25,12 +25,20 @@ class ThemeToggle {
       lightColor: options.lightColor || '#ffffff',
       transition: options.transition || '0.3s ease',
       zIndex: options.zIndex || 9999,
-      defaultTheme: options.defaultTheme || 'light',
-      excludeSelectors: options.excludeSelectors || [],  // 排除的选择器数组
+      defaultTheme: options.defaultTheme || 'system',  // 可选值: 'light', 'dark', 'system'
+      excludeSelectors: options.excludeSelectors || [],
       ...options
     };
 
-    this.theme = this.getSavedTheme() || this.options.defaultTheme;
+    // 处理默认主题
+    let defaultTheme = this.options.defaultTheme;
+    if (defaultTheme === 'system') {
+      // 如果设置为 'system'，则检测系统主题
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      defaultTheme = prefersDark ? 'dark' : 'light';
+    }
+    
+    this.theme = this.getSavedTheme() || defaultTheme;
     this.init();
   }
 

@@ -322,7 +322,7 @@
               <td style="padding: 12px; border-bottom: 1px solid rgba(128, 128, 128, 0.1);"><code>defaultTheme</code></td>
               <td style="padding: 12px; border-bottom: 1px solid rgba(128, 128, 128, 0.1);">String</td>
               <td style="padding: 12px; border-bottom: 1px solid rgba(128, 128, 128, 0.1);"><code>'light'</code></td>
-              <td style="padding: 12px; border-bottom: 1px solid rgba(128, 128, 128, 0.1);">默认主题。可选值：<code>'light'</code>（浅色）、<code>'dark'</code>（深色）。仅在用户首次访问时生效</td>
+              <td style="padding: 12px; border-bottom: 1px solid rgba(128, 128, 128, 0.1);">默认主题。可选值：<code>'system'</code>（浅色）、<code>'dark'</code>（深色）、<code>'system'</code>（跟随系统）。仅在用户首次访问时生效</td>
             </tr>
             <tr>
               <td style="padding: 12px;"><code>excludeSelectors</code></td>
@@ -344,8 +344,15 @@
   lightColor: '#ffffff',
   transition: '0.3s ease',
   zIndex: 9999,
-  defaultTheme: 'light',
+  defaultTheme: 'dark',  // 'light', 'dark' 或 'system'
   excludeSelectors: ['.no-dark', '#keep-light']
+});</pre>
+      </div>
+
+      <h3 style="margin-top: 2rem;">跟随系统主题示例</h3>
+      <div class="code-block">
+        <pre>new ThemeToggle({
+  defaultTheme: 'system'  // 自动跟随系统深浅色模式
 });</pre>
       </div>
 
@@ -368,6 +375,7 @@
       offset: { x: 20, y: 20 },
       size: 50,
       darkColor: '#1a1a1a',
+      defaultTheme: 'dark',
       lightColor: '#ffffff'
     });
 
