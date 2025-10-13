@@ -180,43 +180,38 @@
 
     <div class="features">
       <div class="feature-card">
-        <h3>🎨 完全可定制</h3>
-        <p>自定义位置、大小、颜色和动画效果，完美融入你的网站设计。</p>
+        <h3>🎨 高度个性化</h3>
+        <p>自定义位置、大小、颜色和动画效果。</p>
       </div>
 
       <div class="feature-card">
         <h3>📱 响应式设计</h3>
-        <p>在所有设备上都能完美显示，支持触摸操作和键盘导航。</p>
+        <p>在所有设备上都能完美显示。</p>
       </div>
 
       <div class="feature-card">
         <h3>💾 记忆功能</h3>
-        <p>自动保存用户的主题偏好，下次访问时自动应用。</p>
+        <p>自动保存用户的主题偏好。</p>
       </div>
 
       <div class="feature-card">
-        <h3>🚀 轻量级</h3>
-        <p>零依赖，纯原生JavaScript，文件大小不到5KB。</p>
+        <h3>⚡ 原生，轻量,即插即用</h3>
+        <p>无依赖，只需2行JS代码即可集成，<del>无需复杂配置</del>。</p>
       </div>
 
       <div class="feature-card">
-        <h3>⚡ 即插即用</h3>
-        <p>只需一行代码即可集成，无需复杂配置。</p>
+        <h3>🔧 <del>灵活</del>联动</h3>
+        <p>支持EventListener。</p>
       </div>
 
       <div class="feature-card">
-        <h3>🔧 灵活控制</h3>
-        <p>支持悬浮、固定多种定位方式，满足各种使用场景。</p>
-      </div>
-
-      <div class="feature-card">
-        <h3>🎯 选择性排除</h3>
-        <p>可以指定某些元素不受深色模式影响，保持原有样式。</p>
+        <h3>🎯 排除项</h3>
+        <p>可以指定某些元素不受深色模式影响。</p>
       </div>
     </div>
 
     <div class="controls">
-      <h2>实时调整按钮配置</h2>
+      <h2>实时调整按钮配置（详细参数见下方）</h2>
       
       <div class="control-group">
         <label for="positionSelect">按钮位置：</label>
@@ -257,37 +252,101 @@
       
       <h3>方法1：引入JS文件</h3>
       <div class="code-block">
-        <pre>&lt;script src="theme-toggle.js"&gt;&lt;/script&gt;
+        <pre>&lt;script src="https://cqhcharlie.github.io/Auto-Theme-button/button_mode/theme-toggle.js"&gt;&lt;/script&gt;
 &lt;script&gt;
-  new ThemeToggle({
-    position: 'bottom-right',
-    offset: { x: 20, y: 20 },
-    size: 50,
-    darkColor: '#1a1a1a',
-    lightColor: '#ffffff'
-  });
+  new ThemeToggle();
 &lt;/script&gt;</pre>
       </div>
 
-      <h3 style="margin-top: 2rem;">方法2：CDN（即将推出）</h3>
+      <!-- <h3 style="margin-top: 2rem;">方法2：CDN（即将推出）</h3>
       <div class="code-block">
         <pre>&lt;script src="https://cdn.example.com/theme-toggle.min.js"&gt;&lt;/script&gt;
 &lt;script&gt;new ThemeToggle();&lt;/script&gt;</pre>
+      </div> -->
+
+      <h3 style="margin-top: 2rem;">配置选项详解</h3>
+      <div style="overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse; margin-top: 1rem; background: rgba(128, 128, 128, 0.05); border-radius: 8px;">
+          <thead>
+            <tr style="background: rgba(128, 128, 128, 0.15);">
+              <th style="padding: 12px; text-align: left; border-bottom: 2px solid rgba(128, 128, 128, 0.2);">参数名</th>
+              <th style="padding: 12px; text-align: left; border-bottom: 2px solid rgba(128, 128, 128, 0.2);">类型</th>
+              <th style="padding: 12px; text-align: left; border-bottom: 2px solid rgba(128, 128, 128, 0.2);">默认值</th>
+              <th style="padding: 12px; text-align: left; border-bottom: 2px solid rgba(128, 128, 128, 0.2);">说明</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding: 12px; border-bottom: 1px solid rgba(128, 128, 128, 0.1);"><code>position</code></td>
+              <td style="padding: 12px; border-bottom: 1px solid rgba(128, 128, 128, 0.1);">String</td>
+              <td style="padding: 12px; border-bottom: 1px solid rgba(128, 128, 128, 0.1);"><code>'top-right'</code></td>
+              <td style="padding: 12px; border-bottom: 1px solid rgba(128, 128, 128, 0.1);">按钮位置。可选值：<code>'top-left'</code>、<code>'top-right'</code>、<code>'bottom-left'</code>、<code>'bottom-right'</code>、<code>'fixed'</code>（页面中央）</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px; border-bottom: 1px solid rgba(128, 128, 128, 0.1);"><code>offset</code></td>
+              <td style="padding: 12px; border-bottom: 1px solid rgba(128, 128, 128, 0.1);">Object</td>
+              <td style="padding: 12px; border-bottom: 1px solid rgba(128, 128, 128, 0.1);"><code>{ x: 20, y: 20 }</code></td>
+              <td style="padding: 12px; border-bottom: 1px solid rgba(128, 128, 128, 0.1);">按钮距离边缘的偏移量（像素）。<code>x</code> 为水平偏移，<code>y</code> 为垂直偏移</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px; border-bottom: 1px solid rgba(128, 128, 128, 0.1);"><code>size</code></td>
+              <td style="padding: 12px; border-bottom: 1px solid rgba(128, 128, 128, 0.1);">Number</td>
+              <td style="padding: 12px; border-bottom: 1px solid rgba(128, 128, 128, 0.1);"><code>50</code></td>
+              <td style="padding: 12px; border-bottom: 1px solid rgba(128, 128, 128, 0.1);">按钮大小（像素）。建议范围：30-100</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px; border-bottom: 1px solid rgba(128, 128, 128, 0.1);"><code>darkColor</code></td>
+              <td style="padding: 12px; border-bottom: 1px solid rgba(128, 128, 128, 0.1);">String</td>
+              <td style="padding: 12px; border-bottom: 1px solid rgba(128, 128, 128, 0.1);"><code>'#1a1a1a'</code></td>
+              <td style="padding: 12px; border-bottom: 1px solid rgba(128, 128, 128, 0.1);">深色模式的背景颜色。支持任何有效的 CSS 颜色值</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px; border-bottom: 1px solid rgba(128, 128, 128, 0.1);"><code>lightColor</code></td>
+              <td style="padding: 12px; border-bottom: 1px solid rgba(128, 128, 128, 0.1);">String</td>
+              <td style="padding: 12px; border-bottom: 1px solid rgba(128, 128, 128, 0.1);"><code>'#ffffff'</code></td>
+              <td style="padding: 12px; border-bottom: 1px solid rgba(128, 128, 128, 0.1);">浅色模式的背景颜色。支持任何有效的 CSS 颜色值</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px; border-bottom: 1px solid rgba(128, 128, 128, 0.1);"><code>transition</code></td>
+              <td style="padding: 12px; border-bottom: 1px solid rgba(128, 128, 128, 0.1);">String</td>
+              <td style="padding: 12px; border-bottom: 1px solid rgba(128, 128, 128, 0.1);"><code>'0.3s ease'</code></td>
+              <td style="padding: 12px; border-bottom: 1px solid rgba(128, 128, 128, 0.1);">主题切换的过渡动画效果。CSS transition 属性值</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px; border-bottom: 1px solid rgba(128, 128, 128, 0.1);"><code>zIndex</code></td>
+              <td style="padding: 12px; border-bottom: 1px solid rgba(128, 128, 128, 0.1);">Number</td>
+              <td style="padding: 12px; border-bottom: 1px solid rgba(128, 128, 128, 0.1);"><code>9999</code></td>
+              <td style="padding: 12px; border-bottom: 1px solid rgba(128, 128, 128, 0.1);">按钮的 CSS z-index 层级，确保按钮显示在其他元素上方</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px; border-bottom: 1px solid rgba(128, 128, 128, 0.1);"><code>defaultTheme</code></td>
+              <td style="padding: 12px; border-bottom: 1px solid rgba(128, 128, 128, 0.1);">String</td>
+              <td style="padding: 12px; border-bottom: 1px solid rgba(128, 128, 128, 0.1);"><code>'light'</code></td>
+              <td style="padding: 12px; border-bottom: 1px solid rgba(128, 128, 128, 0.1);">默认主题。可选值：<code>'light'</code>（浅色）、<code>'dark'</code>（深色）。仅在用户首次访问时生效</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px;"><code>excludeSelectors</code></td>
+              <td style="padding: 12px;">Array</td>
+              <td style="padding: 12px;"><code>[]</code></td>
+              <td style="padding: 12px;">排除深色化的元素选择器数组。这些元素将始终保持浅色样式。例如：<code>['.no-dark', '#logo', '.card.important']</code></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
-      <h3 style="margin-top: 2rem;">配置选项</h3>
+      <h3 style="margin-top: 2rem;">完整配置示例</h3>
       <div class="code-block">
-        <pre>{
-  position: 'top-right',      // 位置：'top-left', 'top-right', 'bottom-left', 'bottom-right', 'fixed'
-  offset: { x: 20, y: 20 },  // 偏移量（像素）
-  size: 50,                   // 按钮大小（像素）
-  darkColor: '#1a1a1a',      // 深色模式背景色
-  lightColor: '#ffffff',     // 浅色模式背景色
-  transition: '0.3s ease',   // 过渡动画
-  zIndex: 9999,               // 层级
-  defaultTheme: 'light',      // 默认主题：'light' 或 'dark'
-  excludeSelectors: ['.no-dark', '#keep-light']  // 不深色化的元素选择器
-}</pre>
+        <pre>new ThemeToggle({
+  position: 'top-right',
+  offset: { x: 20, y: 20 },
+  size: 50,
+  darkColor: '#1a1a1a',
+  lightColor: '#ffffff',
+  transition: '0.3s ease',
+  zIndex: 9999,
+  defaultTheme: 'light',
+  excludeSelectors: ['.no-dark', '#keep-light']
+});</pre>
       </div>
 
       <h3 style="margin-top: 2rem;">监听主题变化事件</h3>
@@ -301,7 +360,7 @@
   </div>
 
   <!-- 引入主题切换按钮 -->
-  <script src="theme-toggle.js"></script>
+  <script src="https://cqhcharlie.github.io/Auto-Theme-button/button_mode/theme-toggle.js"></script>
   <script>
     // 初始化主题切换按钮
     let themeToggle = new ThemeToggle({
