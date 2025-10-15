@@ -34,7 +34,7 @@
 <tr>
 <td width="33%">
 
-### ⚡ 原生轻量
+### ⚡ 原生,轻量
 无依赖，只需2行代码即可集成
 
 </td>
@@ -127,10 +127,4 @@ document.addEventListener('themeChanged', (e) => {
 访问 Demo 页面，查看可视化配置与示例代码：
 
 https://cqhcharlie.github.io/Auto-Theme-button/button_mode/demo
-
----
-
-## 许可证
-
-MIT License
 
