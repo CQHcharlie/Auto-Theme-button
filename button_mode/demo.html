@@ -258,9 +258,9 @@
     <div class="code-section">
       <h2>如何使用</h2>
       
-      <h3>方法1：引入JS文件</h3>
+      <h3>引入JS文件(CDN)</h3>
       <div class="code-block">
-        <pre>&lt;script src="https://cqhcharlie.github.io/Auto-Theme-button/button_mode/theme-toggle.js"&gt;&lt;/script&gt;
+        <pre>&lt;script src="https://cdn.jsdelivr.net/gh/cqhcharlie/Auto-Theme-button/button_mode/theme-toggle.min.js"&gt;&lt;/script&gt;
 &lt;script&gt;
   new ThemeToggle();
 &lt;/script&gt;</pre>
@@ -272,7 +272,7 @@
 &lt;script&gt;new ThemeToggle();&lt;/script&gt;</pre>
       </div> -->
 
-      <h3 style="margin-top: 2rem;">配置选项详解</h3>
+      <h3 style="margin-top: 2rem;">全部配置选项</h3>
       <div style="overflow-x: auto;">
         <table style="width: 100%; border-collapse: collapse; margin-top: 1rem; background: rgba(128, 128, 128, 0.05); border-radius: 8px;">
           <thead>
@@ -379,7 +379,7 @@
 });</pre>
       </div>
 
-      <h3 style="margin-top: 2rem;">监听主题变化事件</h3>
+      <h3 style="margin-top: 2rem;">EventListener监听主题变化事件</h3>
       <div class="code-block">
         <pre>document.addEventListener('themeChanged', (e) => {
   console.log('主题已切换为:', e.detail.theme);
@@ -390,7 +390,7 @@
   </div>
 
   <!-- 引入主题切换按钮 -->
-  <script src="theme-toggle.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/cqhcharlie/Auto-Theme-button/button_mode/theme-toggle.min.js"></script>
   <script>
     // 初始化主题切换按钮
     let themeToggle = new ThemeToggle({

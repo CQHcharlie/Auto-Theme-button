@@ -1,18 +1,6 @@
 /**
  * Auto Theme Toggle Button
  * 一个独立的主题切换按钮，可嵌入任何网站
- * 
- * 使用方法：
- * <script src="theme-toggle.js"></script>
- * <script>
- *   new ThemeToggle({
- *     position: 'bottom-right', // 'top-left', 'top-right', 'bottom-left', 'bottom-right', 'fixed'
- *     offset: { x: 20, y: 20 },
- *     size: 50,
- *     darkColor: '#1a1a1a',
- *     lightColor: '#ffffff'
- *   });
- * </script>
  */
 
 class ThemeToggle {
