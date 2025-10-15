@@ -27,6 +27,11 @@ class ThemeToggle {
       zIndex: options.zIndex || 9999,
       defaultTheme: options.defaultTheme || 'system',  // 可选值: 'light', 'dark', 'system'
       excludeSelectors: options.excludeSelectors || [],
+      // 过滤器深色模式（针对难以覆盖的站点提供增强兼容方案）
+      useFilter: options.useFilter === true || options.useFilter === false ? options.useFilter : false,
+      filterValue: options.filterValue || 'invert(1) hue-rotate(180deg)',
+      // 这些元素通常需要“反向再反向”以保持原始颜色（图片/视频/媒体等）
+      filterExcludeSelectors: options.filterExcludeSelectors || ['img', 'video', 'picture', 'canvas', 'iframe', 'svg'],
       ...options
     };
 
@@ -138,7 +143,7 @@ class ThemeToggle {
   }
 
   applyTheme(theme, immediate = false) {
-    const { darkColor, lightColor, excludeSelectors } = this.options;
+    const { darkColor, lightColor } = this.options;
     
     // 如果是立即应用（初始化时），暂时禁用过渡动画
     if (immediate) {
@@ -152,11 +157,20 @@ class ThemeToggle {
     }
     
     if (theme === 'dark') {
-      document.documentElement.style.setProperty('--bg-color', darkColor);
-      document.documentElement.style.setProperty('--text-color', lightColor);
-      document.documentElement.setAttribute('data-theme', 'dark');
-      document.body.style.backgroundColor = darkColor;
-      document.body.style.color = lightColor;
+      // 当使用过滤器模式时，底色需要反向设置，这样经由 filter 反转后视觉效果才是深色
+      if (this.options.useFilter) {
+        document.documentElement.style.setProperty('--bg-color', lightColor);
+        document.documentElement.style.setProperty('--text-color', darkColor);
+        document.documentElement.setAttribute('data-theme', 'dark');
+        document.body.style.backgroundColor = lightColor;
+        document.body.style.color = darkColor;
+      } else {
+        document.documentElement.style.setProperty('--bg-color', darkColor);
+        document.documentElement.style.setProperty('--text-color', lightColor);
+        document.documentElement.setAttribute('data-theme', 'dark');
+        document.body.style.backgroundColor = darkColor;
+        document.body.style.color = lightColor;
+      }
     } else {
       document.documentElement.style.setProperty('--bg-color', lightColor);
       document.documentElement.style.setProperty('--text-color', darkColor);
@@ -165,8 +179,15 @@ class ThemeToggle {
       document.body.style.color = darkColor;
     }
 
-    // 为排除的元素添加特殊样式
-    this.applyExcludeStyles(theme);
+    // 如果启用了过滤器深色模式，则应用过滤器样式；否则应用排除样式
+    if (this.options.useFilter) {
+      this.applyFilterStyles(theme);
+    } else {
+      // 保持原有的排除机制
+      this.applyExcludeStyles(theme);
+      // 移除可能存在的过滤器样式
+      this.removeFilterStyles();
+    }
 
     // 移除禁用过渡的样式
     if (immediate) {
@@ -183,14 +204,51 @@ class ThemeToggle {
     document.dispatchEvent(event);
   }
 
+  // 过滤器深色模式：通过全局 invert + hue-rotate 达到“快速深色化”的效果
+  applyFilterStyles(theme) {
+    // 先移除旧样式，避免重复
+    this.removeFilterStyles();
+
+    if (theme !== 'dark') {
+      return;
+    }
+
+    const style = document.createElement('style');
+    style.id = 'theme-toggle-filter-style';
+    const filter = this.options.filterValue;
+    const excludes = Array.isArray(this.options.filterExcludeSelectors) ? this.options.filterExcludeSelectors : [];
+
+    // 规则说明：
+    // 1) 对整个页面应用过滤器（仅在 data-theme="dark" 时）
+    // 2) 对于需要还原颜色的元素（图片/视频/媒体等、按钮本身），再次应用同样的过滤器以抵消父级效果
+    const lines = [];
+    lines.push(`html[data-theme="dark"] { filter: ${filter} !important; }`);
+    // 确保按钮不被“反色”影响，维持其本来配色
+    lines.push(`html[data-theme="dark"] #theme-toggle-button { filter: ${filter} !important; }`);
+    if (excludes.length > 0) {
+      const selector = excludes.map(s => `html[data-theme="dark"] ${s}`).join(',\n');
+      lines.push(`${selector} { filter: ${filter} !important; }`);
+    }
+
+    style.textContent = lines.join('\n');
+    document.head.appendChild(style);
+  }
+
+  removeFilterStyles() {
+    const old = document.getElementById('theme-toggle-filter-style');
+    if (old) old.remove();
+  }
+
   applyExcludeStyles(theme) {
     const { excludeSelectors, lightColor, darkColor } = this.options;
+    // 若启用过滤器模式，则不再使用背景/文本强制覆盖的排除策略
+    if (this.options.useFilter) {
+      this.removeExcludeStyles();
+      return;
+    }
     
     // 移除旧的排除样式
-    const oldStyle = document.getElementById('theme-toggle-exclude-styles');
-    if (oldStyle) {
-      oldStyle.remove();
-    }
+    this.removeExcludeStyles();
 
     // 如果没有排除选择器，直接返回
     if (!excludeSelectors || excludeSelectors.length === 0) {
@@ -211,6 +269,13 @@ class ThemeToggle {
     
     style.textContent = cssRules;
     document.head.appendChild(style);
+  }
+
+  removeExcludeStyles() {
+    const oldStyle = document.getElementById('theme-toggle-exclude-styles');
+    if (oldStyle) {
+      oldStyle.remove();
+    }
   }
 
   updateButton() {

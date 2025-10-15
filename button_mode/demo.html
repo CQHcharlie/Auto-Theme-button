@@ -239,6 +239,14 @@
         <input type="range" id="offsetYInput" min="0" max="100" value="20">
       </div>
 
+      <div class="control-group">
+        <label for="useFilterInput">启用过滤器深色模式（实验性）：</label>
+        <select id="useFilterInput">
+          <option value="false" selected>关闭（使用传统样式覆盖）</option>
+          <option value="true">开启（invert + hue-rotate）</option>
+        </select>
+      </div>
+
       <div class="button-group">
         <button class="btn" id="applyBtn">应用配置</button>
         <button class="btn btn-secondary" id="resetBtn">重置</button>
@@ -330,6 +338,24 @@
               <td style="padding: 12px;"><code>[]</code></td>
               <td style="padding: 12px;">排除深色化的元素选择器数组。这些元素将始终保持浅色样式。例如：<code>['.no-dark', '#logo', '.card.important']</code></td>
             </tr>
+            <tr>
+              <td style="padding: 12px; border-top: 1px solid rgba(128, 128, 128, 0.1);"><code>useFilter</code></td>
+              <td style="padding: 12px; border-top: 1px solid rgba(128, 128, 128, 0.1);">Boolean</td>
+              <td style="padding: 12px; border-top: 1px solid rgba(128, 128, 128, 0.1);"><code>false</code></td>
+              <td style="padding: 12px; border-top: 1px solid rgba(128, 128, 128, 0.1);">是否启用“过滤器深色模式”（实验性）。当某些网站难以整体深色化时，开启此项可通过 <code>invert + hue-rotate</code> 实现快速深色化。开启后 <code>excludeSelectors</code> 将被忽略，改用 <code>filterExcludeSelectors</code>。</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px; border-top: 1px solid rgba(128, 128, 128, 0.1);"><code>filterValue</code></td>
+              <td style="padding: 12px; border-top: 1px solid rgba(128, 128, 128, 0.1);">String</td>
+              <td style="padding: 12px; border-top: 1px solid rgba(128, 128, 128, 0.1);"><code>'invert(1) hue-rotate(180deg)'</code></td>
+              <td style="padding: 12px; border-top: 1px solid rgba(128, 128, 128, 0.1);">过滤器深色模式所使用的 CSS <code>filter</code> 值，可根据需要进行微调。</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px; border-top: 1px solid rgba(128, 128, 128, 0.1);"><code>filterExcludeSelectors</code></td>
+              <td style="padding: 12px; border-top: 1px solid rgba(128, 128, 128, 0.1);">Array</td>
+              <td style="padding: 12px; border-top: 1px solid rgba(128, 128, 128, 0.1);"><code>['img','video','picture','canvas','iframe','svg']</code></td>
+              <td style="padding: 12px; border-top: 1px solid rgba(128, 128, 128, 0.1);">当 <code>useFilter=true</code> 时，这些选择器会被“反向再反向”，以保持原始颜色（例如图片、视频等媒体）。</td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -345,7 +371,11 @@
   transition: '0.3s ease',
   zIndex: 9999,
   defaultTheme: 'dark',  // 'light', 'dark' 或 'system'
-  excludeSelectors: ['.no-dark', '#keep-light']
+  excludeSelectors: ['.no-dark', '#keep-light'],
+  // 过滤器深色模式（当某些站点难以整体变暗时使用）
+  useFilter: false, // true 开启
+  filterValue: 'invert(1) hue-rotate(180deg)',
+  filterExcludeSelectors: ['img', 'video', 'picture', 'canvas', 'iframe', 'svg']
 });</pre>
       </div>
 
@@ -360,7 +390,7 @@
   </div>
 
   <!-- 引入主题切换按钮 -->
-  <script src="https://cqhcharlie.github.io/Auto-Theme-button/button_mode/theme-toggle.js"></script>
+  <script src="theme-toggle.js"></script>
   <script>
     // 初始化主题切换按钮
     let themeToggle = new ThemeToggle({
@@ -382,10 +412,11 @@
     const sizeInput = document.getElementById('sizeInput');
     const offsetXInput = document.getElementById('offsetXInput');
     const offsetYInput = document.getElementById('offsetYInput');
-    const applyBtn = document.getElementById('applyBtn');
+  const applyBtn = document.getElementById('applyBtn');
     const resetBtn = document.getElementById('resetBtn');
     const destroyBtn = document.getElementById('destroyBtn');
     const recreateBtn = document.getElementById('recreateBtn');
+  const useFilterInput = document.getElementById('useFilterInput');
 
     // 更新显示值
     sizeInput.addEventListener('input', (e) => {
@@ -416,7 +447,8 @@
         offset: { x: offsetX, y: offsetY },
         size: size,
         darkColor: '#1a1a1a',
-        lightColor: '#ffffff'
+        lightColor: '#ffffff',
+        useFilter: useFilterInput.value === 'true'
       });
     });
 
@@ -436,7 +468,8 @@
         offset: { x: 20, y: 20 },
         size: 50,
         darkColor: '#1a1a1a',
-        lightColor: '#ffffff'
+        lightColor: '#ffffff',
+        useFilter: useFilterInput.value === 'true'
       });
     });
 
@@ -457,7 +490,8 @@
         },
         size: parseInt(sizeInput.value),
         darkColor: '#1a1a1a',
-        lightColor: '#ffffff'
+        lightColor: '#ffffff',
+        useFilter: useFilterInput.value === 'true'
       });
       destroyBtn.style.display = 'inline-block';
       recreateBtn.style.display = 'none';
