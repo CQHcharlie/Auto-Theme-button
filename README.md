@@ -128,3 +128,5 @@ document.addEventListener('themeChanged', (e) => {
 
 https://cqhcharlie.github.io/Auto-Theme-button/button_mode/demo
 
+## Stars
+[![Stargazers over time](https://starchart.cc/CQHcharlie/Auto-Theme-button.svg?background=%2300000000&axis=%23d3c8c8&line=%2300990f)](#)
